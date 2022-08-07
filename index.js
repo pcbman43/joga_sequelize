@@ -21,10 +21,9 @@ sequelize
   });
 
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to a sequelize application." })
-});
+// using routes and controllers
+ const articleRouter = require('./routes/article');
+ app.use('/', articleRouter);
 
 // listen for requests
 app.listen(3000, () => {
