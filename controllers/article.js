@@ -19,25 +19,31 @@ const getAllArticles = (req, res) => {
 
 // show article by this slug
 const getArticleBySlug = (req, res) => {
-  models.Article.findOne({
-    where: {
-      slug : req.params.slug
-    },
-    include: [{
-      model: models.Author
-    }],
-  })
-  .then(article => {
-    console.log(article)
-    return res.status(200).json({ article });
-  })
-  .catch(error => {
-    return res.status(500).send(error.message);
-  })
+	models.Article.findOne({
+		where: {
+			slug: req.params.slug
+		},
+		include: [{
+			model: models.Authors
+		},
+		{
+			model: models.Tags,
+			through: {
+				model: models.ArticleTags
+			}
+		}
+		],
+	})
+	.then(article => {
+		console.log(article)
+		return res.status(200).json({ article });
+	})
+	.catch (error => {
+		return res.status(500).send(error.message);
+	})
 };
 
 // export controller functions
 module.exports = {
-  getAllArticles,
-  getArticleBySlug
-}
+	getAllArticles,
+	getArticleBySlug
